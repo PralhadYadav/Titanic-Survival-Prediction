@@ -1,0 +1,22 @@
+services:
+  api:
+    build: ./backend-node # Build the API image from the ./api directory
+    ports:
+      - "5000:5000" # Map host port 5000 to container port 5000
+    environment:
+      NODE_ENV: production # Set Node.js environment to production
+    networks:
+      - app-network # Connect to the shared network
+
+  frontend:
+    build: ./frontend-react # Build the frontend image from the ./client directory
+    ports:
+      - "8080:80" # Map host port 8080 to container port 80 (standard HTTP port)
+    depends_on:
+      - api # Ensure the API service starts before the frontend
+    networks:
+      - app-network # Connect to the shared network
+
+networks:
+  app-network:
+    driver: bridge # Define a bridge network for inter-service communication

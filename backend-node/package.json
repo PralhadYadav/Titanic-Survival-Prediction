@@ -8,7 +8,10 @@
   "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "ts-node-dev src/index.ts"
+    "dev": "ts-node-dev src/index.ts",
+    "build": "tsc --outDir dist && npm run copy-models",
+    "copy-models": "cpx \"src/models/**/*\" dist/models",
+    "start": "node dist/index.js"
   },
   "dependencies": {
     "cors": "^2.8.5",

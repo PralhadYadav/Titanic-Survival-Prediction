@@ -97,7 +97,7 @@ if __name__ == "__main__":
     input_json_str = sys.argv[2]
     print(f"Raw input JSON string received: {input_json_str}", file=sys.stderr)
 
-
+    # 1. Parse JSON input
     try:
         raw_input_data = json.loads(input_json_str)
     except json.JSONDecodeError as e:
@@ -125,19 +125,23 @@ if __name__ == "__main__":
 
     # 4. Make prediction
     try:
-        prediction_proba = model.predict_proba(input_df)[0]
-        prediction = int(model.predict(input_df)[0])
+        prediction_proba = model.predict_proba(input_df)[0] # Get probabilities for each class
+        prediction = int(model.predict(input_df)[0]) # Get the predicted class (0 or 1)
 
-        survival_probability = prediction_proba[1]
+        survival_probability = prediction_proba[1] # Probability of surviving
 
-        model_accuracy_placeholder = 0.785
+        model_accuracy = getattr(model, 'model_accuracy', None) 
+        if model_accuracy is None:
+            model_accuracy = 0.0 # Default value if accuracy is not found
+            print("Warning: 'model_accuracy' attribute not found in the loaded model. Returning 0.0 for accuracy.", file=sys.stderr)
+
 
         response = {
             "prediction": prediction,
             "survival_probability": round(float(survival_probability), 4),
-            "accuracy": model_accuracy_placeholder
+            "accuracy": round(float(model_accuracy), 4) # Use the dynamic accuracy
         }
-        print(json.dumps(response))
+        print(json.dumps(response)) # Print the JSON result to stdout
 
     except Exception as e:
         print(json.dumps({"error": f"Error during prediction: {str(e)}"}), file=sys.stderr)
