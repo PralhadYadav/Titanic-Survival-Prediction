@@ -1,5 +1,10 @@
 import { createLogger, transports, format} from 'winston';
 
+/**
+ * @swagger
+ * summary: Logger Utility
+ * description: Logger utility for the application using Winston.
+ */
 export const logger = createLogger({
     level: 'info',
     format: format.combine(

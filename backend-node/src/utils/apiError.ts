@@ -1,3 +1,8 @@
+/**
+ * @swagger
+ * summary: Api Error Class
+ * description: Custom error class for handling API errors in the application.
+ */
 export class ApiError extends Error{
     statusCode: number;
 
