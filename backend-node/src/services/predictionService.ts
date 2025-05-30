@@ -77,7 +77,7 @@ export const predictSurvival = async (req: Request, res: Response, next: NextFun
             logger.error('Invalid Passenger Class:', result.error);
             throw new ApiError(`Python script returned an error.`, 500);
         } else if (result && typeof result === 'object' && 'prediction' in result && 'accuracy' in result) {
-           res.status(200).json({success: true, message: result}) // Return the valid prediction result.
+           res.status(200).json({success: true, message: result})
         } else {
             logger.error('Invalid response format from Python script.');
             throw new ApiError('Invalid response format from Python script.', 500);
