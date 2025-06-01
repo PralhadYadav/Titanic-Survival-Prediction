@@ -11,3 +11,5 @@
 **/.npm
 **/.eslintcache
 **/.vscode-test
+**/venv
+**/.venv

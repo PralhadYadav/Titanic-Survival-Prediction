@@ -15,7 +15,7 @@ const PYTHON_SCRIPT_PATH = path.join(__dirname, '../models/predict.py');
  * description: This function runs a Python script using the PythonShell library.
  */
 const runPythonScript = (scriptName: string, options: any): Promise<any[]> => {
-    logger.error(`Running Python script: ${scriptName} with options: ${JSON.stringify(options)}`);
+    logger.info(`Running Python script: ${scriptName} with options: ${JSON.stringify(options)}`);
     return PythonShell.run(scriptName, options);
 };
 
@@ -46,9 +46,9 @@ const parseScriptInput = (data: any) => {
 export const predictSurvival = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
         const passangerData = req.body;
-        if (!passangerData || Object.keys(passangerData).length === 0) {
-            logger.error('No passenger data provided.');
-            throw new ApiError('No passenger data provided.', 400);
+        if (!passangerData || typeof passangerData !== 'object' || Object.keys(passangerData).length === 0) {
+            logger.error('Invalid Passanger Data ', passangerData);
+            throw new ApiError('Invalid Passanger Data ', 400);
         }
 
         const error = validateData(passangerData);

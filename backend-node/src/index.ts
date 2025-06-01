@@ -29,8 +29,8 @@ app.use(ErrorHandler)
 // Start the server
 try {
     app.listen(PORT, () => {
-        logger.info('Server Running on PORT ', PORT);
+        logger.info(`Server Running on PORT ` + PORT);
     })
 } catch (error) {
-    logger.error(' Error starting server on port ', PORT)
+    logger.error(`Error starting server on port ` + PORT)
 }

@@ -25,21 +25,21 @@ enum Embarked {
 type PassangerForm = {
   Pclass: Pclass,
   Sex: Gender;
-  Age: number;
-  SibSp: number;
-  Parch: number;
-  Fare: number;
+  Age: string | number;
+  SibSp: string | number;
+  Parch: string | number;
+  Fare:string | number;
   Embarked: string;
 }
 
 const initialState: PassangerForm = {
   Pclass: Pclass.NONE,
   Sex: Gender.NONE,
-  Age: 0,
-  SibSp: 0,
-  Parch: 0,
-  Fare: 0,
-  Embarked: '',
+  Age: '',
+  SibSp: '',
+  Parch: '',
+  Fare: '',
+  Embarked: Embarked.NONE,
 }
 
 const initalResult = {
@@ -57,7 +57,7 @@ const App = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     try {
       const { name, value } = e.target;
-      setState({ ...state, [name]: value })
+      setState({ ...state, [name]: name === "Age" || name === "SibSp" || name === "Parch" || name === "Fare" ? Number(value) : value });
     } catch (error) {
       alert(`something went wrong please try again ${error}`)
     }
@@ -72,15 +72,25 @@ const App = () => {
       const { success, message } = res.data;
       if (success) {
         setShowResult(true);
-        setLoading(false);
         setResult(message);
       }
       else {
+        setLoading(false);
+        setShowResult(false);
         alert('Something went wrong, please try again later');
       }
-    } catch (error) {
-      console.log(error)
-      alert(error)
+      setLoading(false);
+    } catch (error: any) {
+      console.error('Error details:', error);
+      setLoading(false);
+      setShowResult(false);
+      if (error.response && error.response.data) {
+        alert(`Error: ${error.response.data.message || 'An error occurred'}`);
+      } else if (error.message) {
+        alert(`Error: ${error.message}`);
+      } else {
+        alert('An unexpected error occurred');
+      }
     }
   }
 
